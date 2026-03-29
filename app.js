@@ -153,7 +153,7 @@ const DEST_FLAIR = {
   "Manali": {
     quote: "Valley of Gods",
     tagline: "Adventure awaits in the Himalayas 🏔️",
-    bg: "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1600&q=80"
+    bg: "https://images.unsplash.com/photo-1605649487212-4dcb1b6b5df6?w=1600&q=80"
   },
   "Kerala": {
     quote: "Namaskaram",
@@ -163,12 +163,12 @@ const DEST_FLAIR = {
   "Jaipur": {
     quote: "Padharo Mhare Des",
     tagline: "Welcome to the Royal Pink City 🏰",
-    bg: "https://images.unsplash.com/photo-1599661046289-e31897c9b114?w=1600&q=80"
+    bg: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1600&q=80"
   },
   "Dubai": {
     quote: "Marhaba!",
     tagline: "Luxury meets the Desert dunes 🌆",
-    bg: "https://images.unsplash.com/photo-1512453979798-5eaad0ff3b0d?w=1600&q=80"
+    bg: "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1600&q=80"
   }
 };
 
