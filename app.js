@@ -37,6 +37,14 @@ const HOTEL_RATES = {
   Kerala: { "5star": 8500, "3star": 4200, "2star": 2600, "budget": 1250, "dormitory": 600 },
   Jaipur: { "5star": 7000, "3star": 3500, "2star": 2000, "budget": 1000, "dormitory": 500 },
   Dubai: { "5star": 22000, "3star": 11000, "2star": 7500, "budget": 4500, "dormitory": 2500 },
+  Leh: { "5star": 8000, "3star": 4000, "2star": 2500, "budget": 1200, "dormitory": 600 },
+  Rishikesh: { "5star": 9000, "3star": 3500, "2star": 1800, "budget": 800, "dormitory": 400 },
+  Darjeeling: { "5star": 7500, "3star": 3500, "2star": 2000, "budget": 1000, "dormitory": 500 },
+  Andaman: { "5star": 12000, "3star": 6000, "2star": 3500, "budget": 1800, "dormitory": 800 },
+  Varanasi: { "5star": 6500, "3star": 3000, "2star": 1500, "budget": 800, "dormitory": 350 },
+  Kutch: { "5star": 9500, "3star": 4500, "2star": 2800, "budget": 1500, "dormitory": 800 },
+  Bali: { "5star": 15000, "3star": 6500, "2star": 3000, "budget": 1500, "dormitory": 600 },
+  Delhi: { "5star": 11000, "3star": 4000, "2star": 2200, "budget": 1000, "dormitory": 500 },
 };
 
 const FOOD_RATES = {
@@ -49,6 +57,8 @@ const FOOD_RATES = {
 const ACTIVITY_RATES = {
   // Per person per day in INR
   Goa: 900, Manali: 1400, Kerala: 1100, Jaipur: 800, Dubai: 3500,
+  Leh: 2200, Rishikesh: 1500, Darjeeling: 900, Andaman: 2500, 
+  Varanasi: 600, Kutch: 1200, Bali: 3000, Delhi: 1800,
 };
 
 const DESTINATION_INFO = {
@@ -57,6 +67,14 @@ const DESTINATION_INFO = {
   Kerala: { emoji: "🌴", season: "Sep – Mar", peaksMonths: [10, 11, 12, 1, 2] },
   Jaipur: { emoji: "🏰", season: "Oct – Mar", peaksMonths: [10, 11, 12, 1, 2] },
   Dubai: { emoji: "🌆", season: "Nov – Mar", peaksMonths: [11, 12, 1, 2, 3] },
+  Leh: { emoji: "🛵", season: "May – Sep", peaksMonths: [5, 6, 7, 8] },
+  Rishikesh: { emoji: "🧘", season: "Sep – Nov, Feb – Apr", peaksMonths: [3, 4, 9, 10] },
+  Darjeeling: { emoji: "🚂", season: "Mar – May, Oct – Dec", peaksMonths: [4, 5, 10, 11] },
+  Andaman: { emoji: "🐠", season: "Oct – May", peaksMonths: [11, 12, 1] },
+  Varanasi: { emoji: "🕉️", season: "Oct – Mar", peaksMonths: [10, 11, 12, 1, 2] },
+  Kutch: { emoji: "🏜️", season: "Nov – Feb", peaksMonths: [12, 1] },
+  Bali: { emoji: "🌺", season: "Apr – Oct", peaksMonths: [7, 8, 12] },
+  Delhi: { emoji: "🏛️", season: "Oct – Mar", peaksMonths: [11, 12, 1] },
 };
 
 const CHART_COLORS = ["#FF6B6B", "#4ECDC4", "#FFD700", "#A78BFA"];
@@ -169,7 +187,15 @@ const DEST_FLAIR = {
     quote: "Marhaba!",
     tagline: "Luxury meets the Desert dunes 🌆",
     bg: "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1600&q=80"
-  }
+  },
+  "Leh": { quote: "Julley!", tagline: "Breathtaking altitudes and ancient monasteries 🛵", bg: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1600&q=80" },
+  "Rishikesh": { quote: "Om Shanti", tagline: "The Yoga Capital and River Rapids 🧘", bg: "https://images.unsplash.com/photo-1600378413926-ab8c0a373cb7?w=1600&q=80" },
+  "Darjeeling": { quote: "Queen of the Hills", tagline: "Tea gardens and the Kanchenjunga 🚂", bg: "https://images.unsplash.com/photo-1544256221-a3f2db014af1?w=1600&q=80" },
+  "Andaman": { quote: "Tropical Paradise", tagline: "Crystal clear waters and coral reefs 🐠", bg: "https://images.unsplash.com/photo-1588629000854-aa6a2e4fe5ee?w=1600&q=80" },
+  "Varanasi": { quote: "City of Light", tagline: "The spiritual heart of India 🕉️", bg: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=1600&q=80" },
+  "Kutch": { quote: "Kutch Nahi Dekha, Toh Kuch Nahi Dekha", tagline: "The surreal White Desert festival 🏜️", bg: "https://images.unsplash.com/photo-1605387431326-0e1ceaa96845?w=1600&q=80" },
+  "Bali": { quote: "Island of the Gods", tagline: "Tropical beaches and lush rice terraces 🌺", bg: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1600&q=80" },
+  "Delhi": { quote: "Dilwalon ki Dilli", tagline: "Historic avenues and the majestic Taj Mahal 🏛️", bg: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=1600&q=80" },
 };
 
 function initDestinationFlair() {
