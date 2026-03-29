@@ -164,7 +164,7 @@ const compareCards = $("compareCards");
 // DESTINATION FLAIR DATA
 const DEST_FLAIR = {
   "Goa":       { quote: "Susegad!",                         tagline: "The Goan art of relaxed living 🏖️",              bg: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=1600&q=80" },
-  "Manali":    { quote: "Valley of Gods",                   tagline: "Adventure awaits in the Himalayas 🏔️",          bg: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80" },
+  "Manali":    { quote: "Valley of Gods",                   tagline: "Adventure awaits in the Himalayas 🏔️",          bg: "https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=1600&q=90" },
   "Kerala":    { quote: "Namaskaram",                       tagline: "Peace in God's Own Country 🌴",                 bg: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=1600&q=80" },
   "Jaipur":    { quote: "Padharo Mhare Des",                tagline: "Welcome to the Royal Pink City 🏰",             bg: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=1600&q=80" },
   "Dubai":     { quote: "Marhaba!",                         tagline: "Luxury meets the Desert dunes 🌆",               bg: "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1600&q=80" },
