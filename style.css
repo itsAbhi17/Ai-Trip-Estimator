@@ -456,7 +456,9 @@ body {
 }
 
 .planner-section.has-bg::before {
-  background: rgba(15, 23, 42, 0.75); /* Darker overlay for images */
+  background: rgba(255, 255, 255, 0.35); /* Brighter, elegant overlay for images */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .planner-section > .container {
