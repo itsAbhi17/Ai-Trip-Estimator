@@ -171,9 +171,9 @@ const DEST_FLAIR = {
   "Leh":       { quote: "Julley!",                          tagline: "Breathtaking altitudes and monasteries 🛵",       bg: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=80" },
   "Rishikesh": { quote: "Om Shanti",                        tagline: "The Yoga Capital of the World 🧘",                bg: "https://images.unsplash.com/photo-1584535789935-b28c67c16e8a?w=1600&q=80" },
   "Darjeeling":{ quote: "Queen of the Hills",               tagline: "Tea gardens and Kanchenjunga views 🚂",           bg: "https://images.unsplash.com/photo-1544256221-a3f2db014af1?w=1600&q=80" },
-  "Andaman":   { quote: "Tropical Paradise",                tagline: "Crystal clear waters and coral reefs 🐠",         bg: "images/andaman.jpg" },
-  "Varanasi":  { quote: "City of Light",                    tagline: "The spiritual heart of India 🕉️",                bg: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?w=1600&q=90" },
-  "Kutch":     { quote: "Kutch Nahi Dekha Toh Kuch Nahi",   tagline: "The surreal White Desert of Gujarat 🏜️",       bg: "https://images.unsplash.com/photo-1605387431326-0e1ceaa96845?w=1600&q=90" },
+  "Andaman":   { quote: "Tropical Paradise",                tagline: "Crystal clear waters and coral reefs 🐠",         bg: "https://images.unsplash.com/photo-1589135398309-1723c3b1424b?w=1600&q=90" },
+  "Varanasi":  { quote: "City of Light",                    tagline: "The spiritual heart of India 🕉️",                bg: "https://images.unsplash.com/photo-1590050752117-2346761001bc?w=1600&q=90" },
+  "Kutch":     { quote: "Kutch Nahi Dekha Toh Kuch Nahi",   tagline: "The surreal White Desert of Gujarat 🏜️",       bg: "https://images.unsplash.com/photo-1549114674-0af4ef52194b?w=1600&q=90" },
   "Bali":      { quote: "Island of the Gods",               tagline: "Tropical beaches and lush rice terraces 🌺",    bg: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1600&q=80" },
   "Delhi":     { quote: "Dilwalon ki Dilli",                tagline: "Historic avenues and the Taj Mahal 🏛️",         bg: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=1600&q=80" },
 };
