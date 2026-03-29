@@ -457,11 +457,11 @@ body {
 }
 
 .planner-section.has-bg {
-  filter: brightness(1.15) saturate(1.2);
+  /* Removed filters to keep images natural and clear */
 }
 
 .planner-section.has-bg::before {
-  background: rgba(10, 15, 30, 0.38); /* Much lighter overlay — shows the image vividly */
+  background: rgba(10, 15, 30, 0.2); /* Very light overlay for maximum brightness */
 }
 
 .planner-section > .container {
