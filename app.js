@@ -30,53 +30,6 @@ function rotateTagline() {
 }
 setInterval(rotateTagline, 3000);
 
-const HOTEL_RATES = {
-  // Daily cost per person in INR
-  Goa: { "5star": 7500, "3star": 3800, "2star": 2200, "basic_premium": 1600, "budget": 1100, "dormitory": 550 },
-  Manali: { "5star": 6500, "3star": 3200, "2star": 1900, "basic_premium": 1400, "budget": 950, "dormitory": 450 },
-  Kerala: { "5star": 8500, "3star": 4200, "2star": 2600, "basic_premium": 1900, "budget": 1250, "dormitory": 600 },
-  Jaipur: { "5star": 7000, "3star": 3500, "2star": 2000, "basic_premium": 1500, "budget": 1000, "dormitory": 500 },
-  Dubai: { "5star": 22000, "3star": 11000, "2star": 7500, "basic_premium": 6000, "budget": 4500, "dormitory": 2500 },
-  Leh: { "5star": 8000, "3star": 4000, "2star": 2500, "basic_premium": 1800, "budget": 1200, "dormitory": 600 },
-  Rishikesh: { "5star": 9000, "3star": 3500, "2star": 1800, "basic_premium": 1300, "budget": 800, "dormitory": 400 },
-  Darjeeling: { "5star": 7500, "3star": 3500, "2star": 2000, "basic_premium": 1500, "budget": 1000, "dormitory": 500 },
-  Andaman: { "5star": 12000, "3star": 6000, "2star": 3500, "basic_premium": 2600, "budget": 1800, "dormitory": 800 },
-  Varanasi: { "5star": 6500, "3star": 3000, "2star": 1500, "basic_premium": 1100, "budget": 800, "dormitory": 350 },
-  Kutch: { "5star": 9500, "3star": 4500, "2star": 2800, "basic_premium": 2100, "budget": 1500, "dormitory": 800 },
-  Bali: { "5star": 15000, "3star": 6500, "2star": 3000, "basic_premium": 2200, "budget": 1500, "dormitory": 600 },
-  Delhi: { "5star": 11000, "3star": 4000, "2star": 2200, "basic_premium": 1600, "budget": 1000, "dormitory": 500 },
-};
-
-const FOOD_RATES = {
-  // Per person per meal in INR
-  veg: { breakfast: 180, brunch: 280, lunch: 380, dinner: 450 },
-  nonveg: { breakfast: 280, brunch: 420, lunch: 580, dinner: 780 },
-  mixed: { breakfast: 230, brunch: 350, lunch: 480, dinner: 620 },
-};
-
-const ACTIVITY_RATES = {
-  // Per person per day in INR
-  Goa: 900, Manali: 1400, Kerala: 1100, Jaipur: 800, Dubai: 3500,
-  Leh: 2200, Rishikesh: 1500, Darjeeling: 900, Andaman: 2500, 
-  Varanasi: 600, Kutch: 1200, Bali: 3000, Delhi: 1800,
-};
-
-const DESTINATION_INFO = {
-  Goa: { emoji: "🏖️", season: "Oct – Mar", peaksMonths: [11, 12, 1, 2] },
-  Manali: { emoji: "🏔️", season: "Apr – Jun, Oct", peaksMonths: [4, 5, 6, 10] },
-  Kerala: { emoji: "🌴", season: "Sep – Mar", peaksMonths: [10, 11, 12, 1, 2] },
-  Jaipur: { emoji: "🏰", season: "Oct – Mar", peaksMonths: [10, 11, 12, 1, 2] },
-  Dubai: { emoji: "🌆", season: "Nov – Mar", peaksMonths: [11, 12, 1, 2, 3] },
-  Leh: { emoji: "🛵", season: "May – Sep", peaksMonths: [5, 6, 7, 8] },
-  Rishikesh: { emoji: "🧘", season: "Sep – Nov, Feb – Apr", peaksMonths: [3, 4, 9, 10] },
-  Darjeeling: { emoji: "🚂", season: "Mar – May, Oct – Dec", peaksMonths: [4, 5, 10, 11] },
-  Andaman: { emoji: "🐠", season: "Oct – May", peaksMonths: [11, 12, 1] },
-  Varanasi: { emoji: "🕉️", season: "Oct – Mar", peaksMonths: [10, 11, 12, 1, 2] },
-  Kutch: { emoji: "🏜️", season: "Nov – Feb", peaksMonths: [12, 1] },
-  Bali: { emoji: "🌺", season: "Apr – Oct", peaksMonths: [7, 8, 12] },
-  Delhi: { emoji: "🏛️", season: "Oct – Mar", peaksMonths: [11, 12, 1] },
-};
-
 const CHART_COLORS = ["#FF6B6B", "#4ECDC4", "#FFD700", "#A78BFA"];
 const CATEGORIES = ["Stay", "Food", "Activities", "Misc"];
 
@@ -218,11 +171,56 @@ function init() {
   initDestinationFlair();
   initMealToggles();
   initDestPlanBtns();
+  initDarkMode();
+  initPrint();
   
   estimateBtn.addEventListener("click", handleEstimate);
   if (resetBtn) resetBtn.addEventListener("click", handleReset);
   comparePlans.addEventListener("change", toggleCompareCards);
   $("toggleAllMeals").addEventListener("click", handleToggleAllMeals);
+  
+  const currencySelect = $("currency");
+  if (currencySelect) {
+    currencySelect.addEventListener("change", () => {
+      if (outputSection.classList.contains("visible") && !loadingState.classList.contains("active")) {
+        handleEstimate(); // re-calculate when currency is changed
+      }
+    });
+  }
+}
+
+function initDarkMode() {
+  const themeToggle = $("themeToggle");
+  if (!themeToggle) return;
+  const icon = themeToggle.querySelector("i");
+  
+  const currentTheme = localStorage.getItem("theme") || "light";
+  if (currentTheme === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+    icon.setAttribute("data-lucide", "sun");
+  }
+  
+  themeToggle.addEventListener("click", () => {
+    let theme = document.documentElement.getAttribute("data-theme");
+    if (theme === "dark") {
+      document.documentElement.removeAttribute("data-theme");
+      localStorage.setItem("theme", "light");
+      icon.setAttribute("data-lucide", "moon");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+      icon.setAttribute("data-lucide", "sun");
+    }
+    lucide.createIcons();
+  });
+}
+
+function initPrint() {
+  const btn = $("downloadPlanBtn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    window.print();
+  });
 }
 
 function handleReset() {
@@ -436,43 +434,8 @@ function initDestPlanBtns() {
 // ════════════════════════════════════════
 // COST CALCULATION ENGINE
 // ════════════════════════════════════════
-function calcCost(dest, nights, days, adults, kids, seniors, hotel, foodType, meals, luxuryMult) {
-  const hRate = HOTEL_RATES[dest]?.[hotel] ?? 2000;
-  // Stay: Seniors get same rate as adults
-  const stay = Math.round((adults * hRate + kids * hRate * 0.7 + seniors * hRate) * nights);
 
-  const foodRates = FOOD_RATES[foodType] ?? FOOD_RATES.mixed;
-  let foodPerAdult = 0;
-  if (meals.breakfast) foodPerAdult += foodRates.breakfast;
-  if (meals.brunch)    foodPerAdult += foodRates.brunch;
-  if (meals.lunch)     foodPerAdult += foodRates.lunch;
-  if (meals.dinner)    foodPerAdult += foodRates.dinner;
-
-  // Food: Seniors same as adults
-  const food = Math.round((adults * foodPerAdult + kids * foodPerAdult * 0.6 + seniors * foodPerAdult) * days);
-
-  const aRate = ACTIVITY_RATES[dest] ?? 1000;
-  // Activities: Seniors get 0.8x weight
-  const activities = Math.round((adults * aRate + kids * aRate * 0.5 + seniors * aRate * 0.8) * days);
-
-  const miscBase = (stay + food + activities) * 0.12;
-
-  // Luxury multiplier: 0.7 (budget) → 1.4 (luxury)
-  const lm = 0.7 + luxuryMult * 0.7;
-
-  const resStay = Math.round(stay * lm);
-  const resFood = Math.round(food * lm);
-  const resActs = Math.round(activities * lm);
-  const resMisc = Math.round(miscBase * lm);
-  const total   = resStay + resFood + resActs + resMisc;
-
-  return { stay: resStay, food: resFood, activities: resActs, misc: resMisc, total };
-}
-
-// ════════════════════════════════════════
-// MAIN ESTIMATE HANDLER
-// ════════════════════════════════════════
-function handleEstimate() {
+async function handleEstimate() {
   const dest = $("destination").value;
   if (!dest) { shakeBtn(); return; }
 
@@ -492,43 +455,56 @@ function handleEstimate() {
     dinner:    $("mealDinner").checked,
   };
 
-  // Show output section and loading
   outputSection.classList.add("visible");
   loadingState.classList.add("active");
   resultsGrid.classList.remove("visible");
   outputSection.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  // Simulate AI analysis delay
-  setTimeout(() => {
+  try {
+    const res = await fetch('/api/estimate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dest, nights, days, adults, kids, seniors, hotel, foodType, meals, luxuryMult })
+    });
+    
+    if (!res.ok) throw new Error("API failed");
+    
+    const data = await res.json();
+    
     loadingState.classList.remove("active");
     resultsGrid.classList.add("visible");
-
-    const costs = calcCost(dest, nights, days, adults, kids, seniors, hotel, foodType, meals, luxuryMult);
-    const loOff = 1 - 0.10;
-    const hiOff = 1 + 0.15;
-    const rangeL = Math.round(costs.total * loOff);
-    const rangeH = Math.round(costs.total * hiOff);
-
-    renderTotalCard(costs, dest, nights, days, adults, kids, seniors, hotel, rangeL, rangeH);
-    renderChart(costs);
-    renderInsights(dest, hotel, days, luxuryMult);
-    renderSuggestions(costs, dest, nights, days, adults, kids, seniors, hotel, foodType, meals, luxuryMult);
-    renderBreakdownTable(costs);
-
-    // Compare cards
-    if (comparePlans.checked) {
-      const budgetCost = calcCost(dest, nights, days, adults, kids, seniors, "budget", foodType, meals, 0);
-      const luxuryCost = calcCost(dest, nights, days, adults, kids, seniors, "5star", foodType, meals, 1);
-      $("budgetPlanPrice").textContent = formatINR(budgetCost.total);
-      $("luxuryPlanPrice").textContent = formatINR(luxuryCost.total);
-      compareCards.classList.add("visible");
-    } else {
-      compareCards.classList.remove("visible");
+    
+    renderTotalCard(data.costs, dest, nights, days, adults, kids, seniors, hotel, data.rangeL, data.rangeH, data.info);
+    renderChart(data.costs);
+    renderInsights(data.season, data.insights);
+    renderSuggestions(data.suggestions);
+    renderBreakdownTable(data.costs);
+    renderAttractions(data.attractions, dest);
+    renderTransport(data.transport, dest);
+    
+    // NEW RENDERERS
+    renderWeatherAndPacking(data.weather, data.packing);
+    renderNearby(data.nearby);
+    
+    if(document.getElementById("compareCards")) {
+       document.getElementById("compareCards").classList.remove("visible");
     }
-
+    
     lucide.createIcons();
-  }, 2000);
+    
+    // Bind Local Guide Button
+    const guideBtn = document.getElementById("localGuideBtn");
+    if(guideBtn) {
+        guideBtn.onclick = () => alert("Connecting you to verified local guides in " + dest + " soon!");
+    }
+    
+  } catch (error) {
+    console.error("Failed to fetch estimate", error);
+    loadingState.classList.remove("active");
+    alert("Error fetching estimation from backend! Is the Node server running?");
+  }
 }
+
 
 function shakeBtn() {
   estimateBtn.style.animation = "none";
@@ -546,13 +522,32 @@ function shakeBtn() {
 // ════════════════════════════════════════
 // RENDER HELPERS
 // ════════════════════════════════════════
-function formatINR(amount) {
-  return "₹" + amount.toLocaleString("en-IN");
+function formatCurrency(amount) {
+  const currencySelect = $("currency");
+  if (!currencySelect) return "₹" + amount.toLocaleString("en-IN");
+  
+  const selectedOpt = currencySelect.options[currencySelect.selectedIndex];
+  const rate = parseFloat(selectedOpt.dataset.rate) || 1;
+  const symbol = selectedOpt.dataset.symbol || "₹";
+  
+  const converted = Math.round(amount * rate);
+  
+  // Update the badge in total card
+  const badge = document.getElementById("outputCurrencyBadge");
+  if (badge) {
+    badge.textContent = selectedOpt.text;
+  }
+  
+  // Format with basic separated logic for other currencies, strict IN for INR
+  if (symbol === "₹") {
+    return symbol + converted.toLocaleString("en-IN");
+  }
+  return symbol + converted.toLocaleString();
 }
 
-function renderTotalCard(costs, dest, nights, days, adults, kids, seniors, hotel, rangeL, rangeH) {
-  $("totalAmount").textContent = formatINR(costs.total);
-  $("costRange").textContent = `Range: ${formatINR(rangeL)} – ${formatINR(rangeH)}`;
+function renderTotalCard(costs, dest, nights, days, adults, kids, seniors, hotel, rangeL, rangeH, info) {
+  $("totalAmount").textContent = formatCurrency(costs.total);
+  $("costRange").textContent = `Range: ${formatCurrency(rangeL)} – ${formatCurrency(rangeH)}`;
   
   const travelerParts = [];
   if (adults > 0) travelerParts.push(`${adults} Adult${adults > 1 ? "s" : ""}`);
@@ -560,7 +555,7 @@ function renderTotalCard(costs, dest, nights, days, adults, kids, seniors, hotel
   if (seniors > 0) travelerParts.push(`${seniors} Senior${seniors > 1 ? "s" : ""}`);
   
   const duration  = nights > 0 ? `${nights} Night${nights > 1 ? "s" : ""} / ${days} Day${days > 1 ? "s" : ""}` : `${days} Day (Full-day)`;
-  $("costMeta").textContent = `${DESTINATION_INFO[dest]?.emoji ?? "✈️"} ${dest} · ${duration} · ${travelerParts.join(", ")} · ${hotelLabel(hotel)}`;
+  $("costMeta").textContent = `${info?.emoji ?? "✈️"} ${dest} · ${duration} · ${travelerParts.join(", ")} · ${hotelLabel(hotel)}`;
 }
 
 function hotelLabel(key) {
@@ -593,7 +588,7 @@ function renderChart(costs) {
         legend: { display: false },
         tooltip: {
           callbacks: {
-            label: (ctx) => ` ${ctx.label}: ${formatINR(ctx.raw)} (${Math.round(ctx.raw / costs.total * 100)}%)`
+            label: (ctx) => ` ${ctx.label}: ${formatCurrency(ctx.raw)} (${Math.round(ctx.raw / costs.total * 100)}%)`
           },
           backgroundColor: "rgba(15, 27, 45, 0.92)",
           titleColor: "#fff",
@@ -611,91 +606,26 @@ function renderChart(costs) {
   legendEl.innerHTML = CATEGORIES.map((cat, i) =>
     `<div class="legend-item">
        <span class="legend-dot" style="background:${CHART_COLORS[i]}"></span>
-       ${cat}: ${formatINR(data[i])}
+       ${cat}: ${formatCurrency(data[i])}
      </div>`
   ).join("");
 }
 
-function renderInsights(dest, hotel, days, luxuryMult) {
-  const startD = $("startDate") && $("startDate").value ? new Date($("startDate").value) : new Date();
-  const currentMonth = startD.getMonth() + 1;
-  const info = DESTINATION_INFO[dest] ?? {};
-  const isPeak = info.peaksMonths?.includes(currentMonth);
-
-  const insights = [];
-
-  if (isPeak) {
-    insights.push({ type: "warn", icon: "📈", text: `Peak season right now in ${dest}! Prices can be 20–30% higher. Consider off-season travel for savings.` });
-  } else {
-    insights.push({ type: "tip", icon: "✅", text: `Great timing! ${dest} is currently in off-season. You can enjoy lower prices and fewer crowds.` });
-  }
-
-  if (hotel === "dormitory" || hotel === "budget") {
-    insights.push({ type: "tip", icon: "💡", text: "Budget choice is great! Consider 'Basic Premium' for a significant comfort boost at a very small price increase." });
-  } else if (hotel === "basic_premium") {
-    insights.push({ type: "tip", icon: "✨", text: "Basic Premium is the ultimate sweet spot. You get sanitized, comfortable rooms that are much better than budget but half the price of 3-star." });
-  } else if (hotel === "3star" || hotel === "2star") {
-    insights.push({ type: "info", icon: "⭐", text: "Standard hotels offer reliable comfort. Switching to Basic Premium can save you ~20% without losing essential comfort." });
-  } else if (hotel === "5star") {
-    insights.push({ type: "warn", icon: "💎", text: "5-star stay significantly increases your budget. Dropping to 3-star or 2-star can save 50%+ on accommodation." });
-  }
-
-  if (days > 10) {
-    insights.push({ type: "tip", icon: "📅", text: `${days} days is a great duration! Longer trips often qualify for weekly hotel discounts of 10–15%.` });
-  }
-
-  if (luxuryMult > 0.75) {
-    insights.push({ type: "info", icon: "🌟", text: "Your luxury preference increases costs. Consider a 'Value' or 'Economy' setting for a comfortable yet cost-effective experience." });
-  }
-
+function renderInsights(season, insights) {
+  $("seasonVal").textContent = season;
   $("insightsList").innerHTML = insights.map((ins) =>
-    `<div class="insight-item ${ins.type}">
-       <span class="insight-icon">${ins.icon}</span>
-       <span>${ins.text}</span>
+    `<div class="insight-item info">
+       <span class="insight-icon">💡</span>
+       <span>${ins}</span>
      </div>`
   ).join("");
 }
 
-function renderSuggestions(costs, dest, nights, days, adults, kids, seniors, hotel, foodType, meals, luxuryMult) {
-  const suggestions = [];
-
-  // Suggest cheaper hotel
-  const hotelOrder = ["5star", "3star", "2star", "basic_premium", "budget", "dormitory"];
-  const hotelIdx = hotelOrder.indexOf(hotel);
-  if (hotelIdx < hotelOrder.length - 1) {
-    const cheaperHotel = hotelOrder[hotelIdx + 1];
-    const cheapCosts = calcCost(dest, nights, days, adults, kids, seniors, cheaperHotel, foodType, meals, luxuryMult);
-    const saving = costs.total - cheapCosts.total;
-    if (saving > 0) {
-      suggestions.push({ text: `Switch to ${hotelLabel(cheaperHotel)} hotel`, saving });
-    }
-  }
-
-  // Suggest fewer days
-  if (days > 3) {
-    const fewerDays = calcCost(dest, nights > 0 ? nights - 1 : 0, days - 1, adults, kids, seniors, hotel, foodType, meals, luxuryMult);
-    const saving = costs.total - fewerDays.total;
-    suggestions.push({ text: `Reduce trip by 1 day`, saving });
-  }
-
-  // Suggest switching to Vegetarian
-  if (foodType !== "veg") {
-    const vegCosts = calcCost(dest, nights, days, adults, kids, seniors, hotel, "veg", meals, luxuryMult);
-    const saving   = costs.total - vegCosts.total;
-    if (saving > 0) suggestions.push({ text: "Switch to Vegetarian food", saving });
-  }
-
-  // Suggest reducing luxury
-  if (luxuryMult > 0.5) {
-    const reducedLux = calcCost(dest, nights, days, adults, kids, seniors, hotel, foodType, meals, 0.4);
-    const saving = costs.total - reducedLux.total;
-    suggestions.push({ text: "Switch to 'Value' trip style", saving });
-  }
-
+function renderSuggestions(suggestions) {
   $("suggestionsList").innerHTML = suggestions.slice(0, 4).map((s) =>
     `<div class="suggestion-item">
        <span class="sugg-text">💡 ${s.text}</span>
-       <span class="sugg-save">Save ${formatINR(Math.abs(s.saving))}</span>
+       <span class="sugg-save">Save ${formatCurrency(Math.abs(s.saving))}</span>
      </div>`
   ).join("");
 }
@@ -718,7 +648,7 @@ function renderBreakdownTable(costs) {
           <div class="br-bar" style="width: 0%; background: ${CHART_COLORS[i]}; transition: width 1.2s ${i * 0.15}s cubic-bezier(0.4, 0, 0.2, 1);" data-target="${pct}"></div>
         </div>
         <span class="br-pct">${pct}%</span>
-        <span class="br-amount">${formatINR(row.amount)}</span>
+        <span class="br-amount">${formatCurrency(row.amount)}</span>
       </div>`;
   }).join("");
 
@@ -771,3 +701,74 @@ styleTag.textContent = `
   }
 `;
 document.head.appendChild(styleTag);
+
+function renderAttractions(list, dest) {
+  const container = $("attractionsList");
+  if (!container) return;
+  if (list.length === 0) {
+    container.innerHTML = `<p style="padding:16px; color:var(--text-muted); font-size:0.9rem;">No specific attractions data available for ${dest}.</p>`;
+    return;
+  }
+  container.innerHTML = list.map((item, i) => `
+    <div class="attraction-item" style="animation: fadeUp 0.5s ease-out ${i*0.1}s both;">
+      <div class="att-head">
+        <h4 class="att-name">📍 ${item.name}</h4>
+        <span class="att-cost">${item.cost > 0 ? formatCurrency(item.cost) : 'Free Entry'}</span>
+      </div>
+      <p class="att-desc">${item.desc}</p>
+      <div class="att-time">
+        <i data-lucide="clock" class="att-time-icon"></i> Time to visit: <strong>${item.time}</strong>
+      </div>
+    </div>
+  `).join("");
+}
+
+
+function renderWeatherAndPacking(weather, packing) {
+  const wTemp = document.getElementById("w_temp");
+  const wCond = document.getElementById("w_cond");
+  if(wTemp && wCond) {
+      wTemp.textContent = weather.temp;
+      wCond.textContent = weather.condition;
+  }
+  
+  const plist = document.getElementById("packingList");
+  if(plist) {
+      plist.innerHTML = packing.map(p => `<li>✅ ${p}</li>`).join("");
+  }
+}
+
+function renderNearby(nearbyList) {
+  const container = document.getElementById("nearbyList");
+  if (!container) return;
+  if (nearbyList.length === 0) {
+    container.innerHTML = `<p style="padding:16px; color:var(--text-muted); font-size:0.9rem;">No nearby places listed.</p>`;
+    return;
+  }
+  container.innerHTML = nearbyList.map((item, i) => `
+    <div class="attraction-item" style="animation: fadeUp 0.5s ease-out ${i*0.1}s both;">
+      <div class="att-head">
+        <h4 class="att-name">🚗 ${item.name}</h4>
+        <span class="att-cost">${item.dist}</span>
+      </div>
+      <p class="att-desc">${item.desc}</p>
+    </div>
+  `).join("");
+}
+
+function renderTransport(list, dest) {
+  const container = document.getElementById("transportList");
+  if (!container) return;
+  if (list.length === 0) return;
+  
+  container.innerHTML = list.map((item, i) => `
+    <div class="transport-item ${item.type ? item.type.toLowerCase() : ''}" style="animation: fadeUp 0.5s ease-out ${i*0.1}s both;">
+      <div class="trans-head">
+        <h4 class="trans-mode">🚖 ${item.mode}</h4>
+        <span class="trans-cost">${formatCurrency(item.price)} <small>avg.</small></span>
+      </div>
+      <p class="trans-desc">${item.desc}</p>
+      ${item.type ? `<small style="background:var(--bg-hover); padding: 2px 6px; border-radius: 4px; font-size:0.75rem;">${item.type} Class</small>` : ''}
+    </div>
+  `).join("");
+}

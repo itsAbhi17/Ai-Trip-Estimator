@@ -29,6 +29,12 @@
         <li><a href="#planner">Planner</a></li>
         <li><a href="#destinations">Destinations</a></li>
         <li><a href="#how-it-works">How It Works</a></li>
+        <!-- Theme Toggle -->
+        <li>
+          <button id="themeToggle" class="btn-icon-only" aria-label="Toggle dark mode" style="background:transparent; border:none; color:inherit; cursor:pointer; font-size:1.2rem; display:flex; align-items:center;">
+            <i data-lucide="moon" class="theme-icon-dark"></i>
+          </button>
+        </li>
       </ul>
       <a href="#planner" class="nav-cta">Start Planning</a>
     </div>
@@ -85,29 +91,69 @@
 
       <div class="planner-card">
 
-        <!-- ── Destination ── -->
-        <div class="form-group">
-          <label class="form-label">
-            <i data-lucide="map-pin" class="label-icon"></i>
-            Destination
-          </label>
-          <div class="select-wrapper">
-            <select id="destination" class="form-select">
-              <option value="">Choose destination…</option>
-              <option value="Goa">🏖️ Goa</option>
-              <option value="Manali">🏔️ Manali</option>
-              <option value="Kerala">🌴 Kerala</option>
-              <option value="Jaipur">🏰 Jaipur</option>
-              <option value="Dubai">🌆 Dubai</option>
-              <option value="Leh">🛵 Leh Ladakh</option>
-              <option value="Rishikesh">🧘 Rishikesh</option>
-              <option value="Darjeeling">🚂 Darjeeling</option>
-              <option value="Andaman">🐠 Andaman & Nicobar</option>
-              <option value="Varanasi">🕉️ Varanasi</option>
-              <option value="Kutch">🏜️ Rann of Kutch</option>
-              <option value="Bali">🌺 Bali</option>
-              <option value="Delhi">🏛️ Delhi & Taj Mahal</option>
-            </select>
+        <!-- ── Destination & Currency ── -->
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">
+              <i data-lucide="map-pin" class="label-icon"></i>
+              Destination
+            </label>
+            <div class="select-wrapper">
+              <select id="destination" class="form-select">
+                <option value="">Choose destination…</option>
+                <option value="Goa">🏖️ Goa</option>
+                <option value="Manali">🏔️ Manali</option>
+                <option value="Kerala">🌴 Kerala</option>
+                <option value="Jaipur">🏰 Jaipur</option>
+                <option value="Dubai">🌆 Dubai</option>
+                <option value="Leh">🛵 Leh Ladakh</option>
+                <option value="Rishikesh">🧘 Rishikesh</option>
+                <option value="Darjeeling">🚂 Darjeeling</option>
+                <option value="Andaman">🐠 Andaman & Nicobar</option>
+                <option value="Varanasi">🕉️ Varanasi</option>
+                <option value="Kutch">🏜️ Rann of Kutch</option>
+                                <option value="Bali">🌺 Bali</option>
+                <option value="Delhi">🏛️ Delhi & Taj Mahal</option>
+                <option value="Paris">🗼 Paris</option>
+                <option value="Tokyo">🌸 Tokyo</option>
+                <option value="Rome">🏛️ Rome</option>
+                <option value="New_York">🗽 New York</option>
+                <option value="London">🎡 London</option>
+                <option value="Maldives">🏝️ Maldives</option>
+                <option value="Singapore">🦁 Singapore</option>
+                <option value="Switzerland">⛷️ Switzerland</option>
+                <option value="Phuket">🏝️ Phuket</option>
+                <option value="Sydney">🦘 Sydney</option>
+                <option value="Istanbul">🕌 Istanbul</option>
+                <option value="Cape_Town">🐧 Cape Town</option>
+                <option value="Amsterdam">🚲 Amsterdam</option>
+                <option value="Barcelona">💃 Barcelona</option>
+                <option value="Kashmir">🏔️ Kashmir</option>
+                <option value="Jaisalmer">🐪 Jaisalmer</option>
+                <option value="Wayanad">🌿 Wayanad</option>
+                <option value="Meghalaya">🌧️ Meghalaya</option>
+                <option value="Spiti">⛰️ Spiti Valley</option>
+                <option value="Bangkok">🛕 Bangkok</option>
+                <option value="Athens">🏛️ Athens</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- ── Currency ── -->
+          <div class="form-group">
+            <label class="form-label">
+              <i data-lucide="coins" class="label-icon"></i>
+              Currency
+            </label>
+            <div class="select-wrapper">
+              <select id="currency" class="form-select">
+                <option value="INR" data-symbol="₹" data-rate="1" selected>🇮🇳 INR (₹)</option>
+                <option value="USD" data-symbol="$" data-rate="0.012">🇺🇸 USD ($)</option>
+                <option value="EUR" data-symbol="€" data-rate="0.011">🇪🇺 EUR (€)</option>
+                <option value="GBP" data-symbol="£" data-rate="0.0094">🇬🇧 GBP (£)</option>
+                <option value="AED" data-symbol="د.إ" data-rate="0.044">🇦🇪 AED (د.إ)</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -345,14 +391,19 @@
       <div class="results-grid" id="resultsGrid">
 
         <!-- A: Total Cost Card -->
-        <div class="result-card total-cost-card">
+        <div class="result-card total-cost-card" id="printArea">
           <div class="total-cost-header">
             <span class="result-tag">Total Estimated Cost</span>
-            <span class="currency-badge">INR ₹</span>
+            <span class="currency-badge" id="outputCurrencyBadge">INR ₹</span>
           </div>
           <div class="total-amount" id="totalAmount">₹0</div>
           <div class="cost-range" id="costRange">Range: ₹0 – ₹0</div>
           <div class="cost-meta" id="costMeta"></div>
+          
+          <button id="downloadPlanBtn" style="margin-top: 15px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(13, 148, 136, 0.1); border: 2px dashed var(--teal); color: var(--teal); padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; transition: all var(--transition);">
+            <i data-lucide="download" class="btn-icon"></i>
+            Save / Print Plan
+          </button>
           <!-- Compare cards (hidden by default) -->
           <div class="compare-cards" id="compareCards">
             <div class="compare-item budget-compare">
@@ -404,6 +455,53 @@
           </div>
           <div class="breakdown-table" id="breakdownTable"></div>
         </div>
+
+      <!-- Local Guide Button -->
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <button id="localGuideBtn" class="btn-primary" style="background: var(--bg-hover); color: white; gap: 8px;">
+          <i data-lucide="users"></i> Book a Local Guide
+        </button>
+      </div>
+
+      <!-- Packing & Weather -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        <div class="result-card" style="background: var(--bg-card);">
+          <h3 class="card-title"><i data-lucide="cloud-sun" class="card-icon"></i> Local Weather & Pack List</h3>
+          <div id="weatherBox" style="margin-bottom: 1rem; padding: 1rem; border-radius: 8px; background: rgba(0,0,0,0.1); display: flex; justify-content: space-between;">
+             <div><strong>Temp:</strong> <span id="w_temp">--</span></div>
+             <div><strong>Type:</strong> <span id="w_cond">--</span></div>
+          </div>
+          <h4 style="margin-bottom: 0.5rem;">Mandatory to Carry:</h4>
+          <ul id="packingList" style="list-style-type: none; padding-left: 0; line-height: 1.8;">
+          </ul>
+        </div>
+        
+        <div class="result-card" style="background: var(--bg-card);">
+          <h3 class="card-title"><i data-lucide="map" class="card-icon"></i> Nearby Escapes (< 200km)</h3>
+          <div class="attractions-grid" id="nearbyList" style="display: flex; flex-direction: column; gap: 1rem;">
+             <!-- Nearby places injected here -->
+          </div>
+        </div>
+      </div>
+
+        <!-- F: Places to Visit -->
+        <div class="result-card attractions-card">
+          <div class="card-header">
+            <i data-lucide="camera" class="card-icon"></i>
+            <h3 class="card-title">Top Places to Visit</h3>
+          </div>
+          <div class="attractions-list" id="attractionsList"></div>
+        </div>
+
+        <!-- G: Local Transport -->
+        <div class="result-card transport-card">
+          <div class="card-header">
+            <i data-lucide="bus-front" class="card-icon"></i>
+            <h3 class="card-title">Local Transport & Fares</h3>
+          </div>
+          <div class="transport-list" id="transportList"></div>
+        </div>
+        
       </div>
     </div>
     </div>
@@ -846,7 +944,7 @@
       </div>
       <div class="footer-bottom">
         <p>© 2026 TripAI. AI-powered budget planning for smart travelers. &nbsp;·&nbsp; Built &amp; Edited by <strong
-            style="color: #FF6B6B;">Rudra</strong></p>
+            style="color: var(--teal);">Abhishek</strong></p>
       </div>
     </div>
   </footer>
