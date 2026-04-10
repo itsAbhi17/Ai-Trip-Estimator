@@ -56,7 +56,11 @@ app.post('/api/estimate', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Backend and Frontend running simultaneously!`);
-  console.log(`🌐 Application URL: http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`✅ Backend and Frontend running simultaneously!`);
+    console.log(`🌐 Application URL: http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

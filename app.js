@@ -546,8 +546,8 @@ function formatCurrency(amount) {
 }
 
 function renderTotalCard(costs, dest, nights, days, adults, kids, seniors, hotel, rangeL, rangeH, info) {
-  $("totalAmount").textContent = formatCurrency(costs.total);
-  $("costRange").textContent = `Range: ${formatCurrency(rangeL)} – ${formatCurrency(rangeH)}`;
+  if ($("totalAmount")) $("totalAmount").textContent = formatCurrency(costs.total);
+  if ($("costRange")) $("costRange").textContent = `Range: ${formatCurrency(rangeL)} – ${formatCurrency(rangeH)}`;
   
   const travelerParts = [];
   if (adults > 0) travelerParts.push(`${adults} Adult${adults > 1 ? "s" : ""}`);
@@ -555,7 +555,7 @@ function renderTotalCard(costs, dest, nights, days, adults, kids, seniors, hotel
   if (seniors > 0) travelerParts.push(`${seniors} Senior${seniors > 1 ? "s" : ""}`);
   
   const duration  = nights > 0 ? `${nights} Night${nights > 1 ? "s" : ""} / ${days} Day${days > 1 ? "s" : ""}` : `${days} Day (Full-day)`;
-  $("costMeta").textContent = `${info?.emoji ?? "✈️"} ${dest} · ${duration} · ${travelerParts.join(", ")} · ${hotelLabel(hotel)}`;
+  if ($("costMeta")) $("costMeta").textContent = `${info?.emoji ?? "✈️"} ${dest} · ${duration} · ${travelerParts.join(", ")} · ${hotelLabel(hotel)}`;
 }
 
 function hotelLabel(key) {
@@ -563,8 +563,10 @@ function hotelLabel(key) {
 }
 
 function renderChart(costs) {
+  const ctxEl = document.getElementById("breakdownChart");
+  if (!ctxEl) return;
   const data = [costs.stay, costs.food, costs.activities, costs.misc];
-  const ctx = document.getElementById("breakdownChart").getContext("2d");
+  const ctx = ctxEl.getContext("2d");
 
   if (pieChart) pieChart.destroy();
 
@@ -603,31 +605,37 @@ function renderChart(costs) {
 
   // Custom legend
   const legendEl = $("chartLegend");
-  legendEl.innerHTML = CATEGORIES.map((cat, i) =>
-    `<div class="legend-item">
-       <span class="legend-dot" style="background:${CHART_COLORS[i]}"></span>
-       ${cat}: ${formatCurrency(data[i])}
-     </div>`
-  ).join("");
+  if (legendEl) {
+    legendEl.innerHTML = CATEGORIES.map((cat, i) =>
+      `<div class="legend-item">
+         <span class="legend-dot" style="background:${CHART_COLORS[i]}"></span>
+         ${cat}: ${formatCurrency(data[i])}
+       </div>`
+    ).join("");
+  }
 }
 
 function renderInsights(season, insights) {
-  $("seasonVal").textContent = season;
-  $("insightsList").innerHTML = insights.map((ins) =>
-    `<div class="insight-item info">
-       <span class="insight-icon">💡</span>
-       <span>${ins}</span>
-     </div>`
-  ).join("");
+  if ($("seasonVal")) $("seasonVal").textContent = season;
+  if ($("insightsList")) {
+    $("insightsList").innerHTML = insights.map((ins) =>
+      `<div class="insight-item info">
+         <span class="insight-icon">💡</span>
+         <span>${ins}</span>
+       </div>`
+    ).join("");
+  }
 }
 
 function renderSuggestions(suggestions) {
-  $("suggestionsList").innerHTML = suggestions.slice(0, 4).map((s) =>
-    `<div class="suggestion-item">
-       <span class="sugg-text">💡 ${s.text}</span>
-       <span class="sugg-save">Save ${formatCurrency(Math.abs(s.saving))}</span>
-     </div>`
-  ).join("");
+  if ($("suggestionsList")) {
+    $("suggestionsList").innerHTML = suggestions.slice(0, 4).map((s) =>
+      `<div class="suggestion-item">
+         <span class="sugg-text">💡 ${s.text}</span>
+         <span class="sugg-save">Save ${formatCurrency(Math.abs(s.saving))}</span>
+       </div>`
+    ).join("");
+  }
 }
 
 function renderBreakdownTable(costs) {
@@ -635,31 +643,33 @@ function renderBreakdownTable(costs) {
     { icon: "🏨", name: "Stay / Accommodation", amount: costs.stay },
     { icon: "🍽️", name: "Food & Meals", amount: costs.food },
     { icon: "🎯", name: "Activities & Sightseeing", amount: costs.activities },
-    { icon: "🛍️", name: "Misc (Transport, Shopping, Tips)", amount: costs.misc },
+    { icon: "🛒", name: "Misc (Transport, Shopping, Tips)", amount: costs.misc },
   ];
   const total = costs.total;
-  $("breakdownTable").innerHTML = rows.map((row, i) => {
-    const pct = Math.round((row.amount / total) * 100);
-    return `
-      <div class="breakdown-row">
-        <span class="br-icon">${row.icon}</span>
-        <span class="br-name">${row.name}</span>
-        <div class="br-bar-wrap">
-          <div class="br-bar" style="width: 0%; background: ${CHART_COLORS[i]}; transition: width 1.2s ${i * 0.15}s cubic-bezier(0.4, 0, 0.2, 1);" data-target="${pct}"></div>
-        </div>
-        <span class="br-pct">${pct}%</span>
-        <span class="br-amount">${formatCurrency(row.amount)}</span>
-      </div>`;
-  }).join("");
+  if ($("breakdownTable")) {
+    $("breakdownTable").innerHTML = rows.map((row, i) => {
+      const pct = Math.round((row.amount / total) * 100);
+      return `
+        <div class="breakdown-row">
+          <span class="br-icon">${row.icon}</span>
+          <span class="br-name">${row.name}</span>
+          <div class="br-bar-wrap">
+            <div class="br-bar" style="width: 0%; background: ${CHART_COLORS[i]}; transition: width 1.2s ${i * 0.15}s cubic-bezier(0.4, 0, 0.2, 1);" data-target="${pct}"></div>
+          </div>
+          <span class="br-pct">${pct}%</span>
+          <span class="br-amount">${formatCurrency(row.amount)}</span>
+        </div>`;
+    }).join("");
 
-  // Animate bars
-  requestAnimationFrame(() => {
+    // Animate bars
     requestAnimationFrame(() => {
-      document.querySelectorAll(".br-bar").forEach((bar) => {
-        bar.style.width = bar.dataset.target + "%";
+      requestAnimationFrame(() => {
+        document.querySelectorAll(".br-bar").forEach((bar) => {
+          bar.style.width = bar.dataset.target + "%";
+        });
       });
     });
-  });
+  }
 }
 
 // ════════════════════════════════════════
